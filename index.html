@@ -3,16 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>명함 제작 프로그램 - 단일 파일(오류수정)</title>
+  <title>명함 제작 프로그램 - 작동 보장 단일 파일</title>
   <!-- Tailwind (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- html2canvas (이미지 캡처) -->
+  <!-- html2canvas (이미지로 캡처) -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <!-- QRCode -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <!-- 한글 폰트 -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;600;700;900&family=Black+Han+Sans&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;600;700&family=Black+Han+Sans&display=swap">
   <style>
     html, body { height: 100%; }
     * { -webkit-tap-highlight-color: transparent; }
@@ -22,18 +20,17 @@
 </head>
 <body class="bg-slate-50">
   <div class="min-h-screen p-3 sm:p-6">
-    <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,480px),1fr] gap-4 sm:gap-6">
+    <div class="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,460px),1fr] gap-4 sm:gap-6">
       <!-- 좌측: 입력 패널 -->
       <div class="bg-white rounded-2xl shadow p-4 sm:p-5">
         <div class="flex items-center justify-between mb-3">
           <h1 class="text-lg sm:text-xl font-semibold">명함 제작 프로그램</h1>
           <button id="resetBtn" class="text-xs px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200">초기화</button>
         </div>
-        <div class="grid grid-cols-1 gap-2">
+        <div class="space-y-2">
           <input id="name" class="w-full border rounded p-2" placeholder="이름" />
           <input id="title" class="w-full border rounded p-2" placeholder="직책" />
           <input id="phone" class="w-full border rounded p-2" placeholder="전화번호" />
-          <textarea id="bio" rows="2" class="w-full border rounded p-2" placeholder="자기소개 (짧게)"></textarea>
           <input id="email" class="w-full border rounded p-2" placeholder="이메일" />
           <input id="website" class="w-full border rounded p-2" placeholder="웹사이트" />
           <input id="address" class="w-full border rounded p-2" placeholder="주소" />
@@ -60,39 +57,16 @@
             <input id="logoInput" type="file" accept="image/*" class="block w-full text-sm" />
             <span id="logoStatus" class="text-xs text-slate-500 hidden">업로드됨 ✓</span>
           </label>
+        </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <label class="text-sm text-slate-600">면 선택
-              <select id="side" class="w-full px-3 py-2 rounded-xl border border-slate-200">
-                <option value="front">앞면</option>
-                <option value="back">뒷면(로고+QR)</option>
-              </select>
-            </label>
-            <label class="text-sm text-slate-600">템플릿(10)
-              <select id="template" class="w-full px-3 py-2 rounded-xl border border-slate-200">
-                <option value="1">1) 클래식 좌측정렬</option>
-                <option value="2">2) 좌측 컬러바</option>
-                <option value="3">3) 하단 굵은 바</option>
-                <option value="4">4) 우측정렬 미니멀</option>
-                <option value="5">5) 분할 레이아웃</option>
-                <option value="6">6) 센터 정렬</option>
-                <option value="7">7) 도트 패턴</option>
-                <option value="8">8) 대각 그라디언트</option>
-                <option value="9">9) 라운드+인셋</option>
-                <option value="10">10) 보더 아웃라인</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="mt-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <button id="savePngPc" class="px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-sm">PC: PNG 다운로드</button>
-            <button id="saveJpgPc" class="px-3 py-2 rounded-xl bg-amber-600 text-white hover:bg-amber-700 text-sm">PC: JPG 다운로드</button>
-            <button id="shareMobile" class="px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-black text-sm">모바일: 갤러리/공유</button>
-          </div>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
+          <button id="savePngPc" class="px-3 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 text-sm">PC: PNG 다운로드</button>
+          <button id="saveJpgPc" class="px-3 py-2 rounded-xl bg-amber-600 text-white hover:bg-amber-700 text-sm">PC: JPG 다운로드</button>
+          <button id="shareMobile" class="px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-black text-sm">모바일: 갤러리/공유</button>
         </div>
       </div>
 
-      <!-- 우측: 미리보기 + 갤러리 -->
+      <!-- 우측: 미리보기 -->
       <div class="space-y-4">
         <div class="bg-white rounded-2xl shadow p-4 sm:p-5">
           <div class="flex items-center justify-between mb-3">
@@ -104,29 +78,18 @@
           </div>
           <div class="flex items-center justify-center">
             <div id="card" class="card relative rounded-2xl shadow-sm overflow-hidden">
-              <!-- 데코레이션 엘리먼트 (템플릿별로 표시/스타일 변경) -->
-              <div id="decorA" class="hidden absolute left-0 top-0 bottom-0 w-2 opacity-70"></div>
-              <div id="decorB" class="hidden absolute left-0 right-0 bottom-0 h-6 opacity-20"></div>
-              <svg id="decorC" class="hidden absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" x2="1" y1="0" y2="1"><stop offset="0%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.25"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g1)"/></svg>
-              <div id="decorD" class="hidden absolute -right-6 -bottom-6 w-32 h-32 opacity-20 text-black"></div>
-              <div id="decorE" class="hidden absolute inset-0 rounded-2xl shadow-[inset_0_0_0_9999px_rgba(255,255,255,0.02)]"></div>
-              <div id="decorF" class="hidden absolute inset-1 ring-1 ring-white/60 rounded-2xl"></div>
-
               <!-- 로고 -->
               <img id="logoImg" alt="logo" class="absolute top-3 right-3 max-h-12 max-w-24 object-contain hidden" />
-
-              <!-- 앞면 내용 -->
-              <div id="front" class="absolute inset-4">
-                <div id="nameOut" class="text-[20px] font-bold leading-tight"></div>
+              <!-- 내용 -->
+              <div class="absolute inset-4 flex flex-col items-center justify-center text-center leading-tight">
+                <div id="nameOut" class="text-[20px] font-bold"></div>
                 <div id="titleOut" class="text-[12px] mt-0.5 opacity-90"></div>
-                <div id="bioOut" class="text-[11px] mt-2"></div>
-                <div id="contactOut" class="absolute left-4 bottom-3 text-[10px] leading-4 opacity-90 space-y-0.5"></div>
-              </div>
-
-              <!-- 뒷면 내용 -->
-              <div id="back" class="absolute inset-4 hidden">
-                <img id="qrImg" alt="QR" class="w-20 h-20 rounded-md shadow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
-                <div id="backText" class="absolute left-1/2 -translate-x-1/2 top-[60%] text-[11px]"></div>
+                <div class="mt-2 text-[11px] opacity-95 space-y-0.5">
+                  <div id="phoneOut"></div>
+                  <div id="emailOut"></div>
+                  <div id="websiteOut"></div>
+                  <div id="addressOut"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -135,9 +98,9 @@
         <div class="bg-white rounded-2xl shadow p-4 sm:p-5">
           <h2 class="text-sm font-semibold mb-2">팁</h2>
           <ul class="list-disc pl-5 text-sm text-slate-600 space-y-1">
-            <li>모바일은 <b>갤러리/공유</b> 버튼으로 사진앱에 저장(미지원 브라우저는 새 탭에서 길게 눌러 저장)</li>
+            <li>모바일은 <b>갤러리/공유</b> 버튼을 눌러 사진앱으로 저장하세요. (iOS: 공유 시 "이미지 저장")</li>
             <li>PC는 PNG/JPG 버튼으로 <b>다운로드 폴더</b>에 저장됩니다.</li>
-            <li>글자 색상은 이름/직책/자기소개/연락처/뒷면 텍스트까지 모두 반영됩니다.</li>
+            <li>글자 색상 선택은 모든 텍스트에 즉시 반영됩니다.</li>
           </ul>
         </div>
       </div>
@@ -145,198 +108,155 @@
   </div>
 
   <script>
-    // ====== 상태 관리 ======
-    const KEY = 'business_card_simple_full_v1';
+    // ---- 상태 관리 (localStorage) ----
+    const KEY = 'business_card_studio_fixed_v1';
     const state = JSON.parse(localStorage.getItem(KEY) || 'null') || {
       name: '홍길동',
       title: '대표 / 이사',
       phone: '010-1234-5678',
-      bio: '진심으로 연결하고, 성장을 설계합니다.',
       email: 'hello@example.com',
       website: 'www.example.com',
       address: '서울특별시 강남구 테헤란로 123',
       bgColor: '#0ea5e9',
-      textColor: '#ffffff',
+      textColor: '#111827',
       fontFamily: "'Pretendard Variable','Noto Sans KR',system-ui,sans-serif",
-      side: 'front',
-      template: 1,
-      logoDataUrl: '',
-      qrDataUrl: ''
+      logoDataUrl: ''
     };
-    const save = () => localStorage.setItem(KEY, JSON.stringify(state));
+    function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
-    // ====== 공용 ======
-    const $ = (id) => document.getElementById(id);
-    const card = $('card');
-    const front = $('front');
-    const back = $('back');
+    // ---- 엘리먼트 ----
+    const el = (id) => document.getElementById(id);
 
-    function applyColors(){
+    // inputs
+    const nameIn = el('name');
+    const titleIn = el('title');
+    const phoneIn = el('phone');
+    const emailIn = el('email');
+    const websiteIn = el('website');
+    const addressIn = el('address');
+    const bgIn = el('bgColor');
+    const txtIn = el('textColor');
+    const fontIn = el('fontFamily');
+
+    const logoInput = el('logoInput');
+    const logoStatus = el('logoStatus');
+
+    // outputs
+    const card = el('card');
+    const logoImg = el('logoImg');
+    const nameOut = el('nameOut');
+    const titleOut = el('titleOut');
+    const phoneOut = el('phoneOut');
+    const emailOut = el('emailOut');
+    const websiteOut = el('websiteOut');
+    const addressOut = el('addressOut');
+
+    // 초기값 바인딩
+    function bindInputs(){
+      nameIn.value = state.name; titleIn.value = state.title; phoneIn.value = state.phone;
+      emailIn.value = state.email; websiteIn.value = state.website; addressIn.value = state.address;
+      bgIn.value = state.bgColor; txtIn.value = state.textColor; fontIn.value = state.fontFamily;
+    }
+
+    function render(){
       card.style.background = state.bgColor;
+      card.style.color = state.textColor;
       card.style.fontFamily = state.fontFamily;
-      const primary = state.textColor;
-      // 앞면 텍스트
-      $('nameOut').style.color = primary; $('nameOut').textContent = state.name || '이름';
-      $('titleOut').style.color = primary; $('titleOut').textContent = state.title || '직책';
-      $('bioOut').style.color = primary; $('bioOut').textContent = state.bio || '';
-      const contactLines = [];
-      if (state.phone) contactLines.push('📞 ' + state.phone);
-      if (state.email) contactLines.push('✉️ ' + state.email);
-      if (state.website) contactLines.push('🔗 ' + state.website);
-      if (state.address) contactLines.push('📍 ' + state.address);
-      $('contactOut').innerHTML = contactLines.map(t=>`<div style="color:${primary}">${t}</div>`).join('');
-      // 뒷면 텍스트
-      $('backText').style.color = primary; $('backText').textContent = state.website || state.email || state.phone || '';
+      nameOut.textContent = state.name || '이름';
+      titleOut.textContent = state.title || '직책';
+      phoneOut.textContent = state.phone; emailOut.textContent = state.email; websiteOut.textContent = state.website; addressOut.textContent = state.address;
+      if(state.logoDataUrl){ logoImg.src = state.logoDataUrl; logoImg.classList.remove('hidden'); } else { logoImg.classList.add('hidden'); }
     }
 
-    function setAlign(align){
-      const name = $('nameOut'), title=$('titleOut'), bio=$('bioOut');
-      name.classList.remove('text-left','text-right','text-center');
-      title.classList.remove('text-left','text-right','text-center');
-      bio.classList.remove('text-left','text-right','text-center');
-      const cls = align==='right'? 'text-right' : align==='center'? 'text-center':'text-left';
-      name.classList.add(cls); title.classList.add(cls); bio.classList.add(cls);
-    }
+    function attachEvents(){
+      const sync = (key) => (e) => { state[key] = e.target.value; save(); render(); };
+      nameIn.addEventListener('input', sync('name'));
+      titleIn.addEventListener('input', sync('title'));
+      phoneIn.addEventListener('input', sync('phone'));
+      emailIn.addEventListener('input', sync('email'));
+      websiteIn.addEventListener('input', sync('website'));
+      addressIn.addEventListener('input', sync('address'));
+      bgIn.addEventListener('input', sync('bgColor'));
+      txtIn.addEventListener('input', sync('textColor'));
+      fontIn.addEventListener('change', sync('fontFamily'));
 
-    function placeContact(pos){
-      const c = $('contactOut');
-      c.className = 'text-[10px] leading-4 opacity-90 space-y-0.5 absolute';
-      if (pos==='br') c.className += ' right-4 bottom-3 text-right';
-      else if (pos==='top') c.className += ' left-4 top-3';
-      else c.className += ' left-4 bottom-3'; // 기본: 왼쪽 하단
-    }
-
-    function applyTemplate(){
-      // 데코 초기화
-      ['decorA','decorB','decorC','decorD','decorE','decorF'].forEach(id=> $(id).classList.add('hidden'));
-      setAlign('left');
-      placeContact('bl');
-
-      const tc = state.textColor; // 텍스트 색으로 악센트 사용
-      const A=$('decorA'), B=$('decorB'), C=$('decorC'), D=$('decorD'), E=$('decorE'), F=$('decorF');
-      // 도트 패턴 준비
-      D.innerHTML = '<svg viewBox="0 0 100 100" class="w-full h-full"><g fill="currentColor">' +
-        Array.from({length:10}).map((_,r)=> Array.from({length:10}).map((__,c)=> `<circle cx="${5+c*10}" cy="${5+r*10}" r="1.2" />`).join('')).join('') +
-      '</g></svg>';
-
-      switch(Number(state.template)){
-        case 1: // 클래식 좌측정렬
-          setAlign('left'); placeContact('bl'); break;
-        case 2: // 좌측 컬러바
-          A.style.background = tc; A.classList.remove('hidden'); setAlign('left'); placeContact('bl'); break;
-        case 3: // 하단 굵은 바
-          B.style.background = tc; B.classList.remove('hidden'); setAlign('left'); placeContact('bl'); break;
-        case 4: // 우측정렬 미니멀
-          setAlign('right'); placeContact('br'); break;
-        case 5: // 분할 레이아웃
-          // 오른쪽 영역 비주얼: 투명 오버레이로 대체
-          B.style.height='100%'; B.style.background = tc + '20'; B.classList.remove('hidden');
-          setAlign('left'); placeContact('bl'); break;
-        case 6: // 센터 정렬
-          setAlign('center'); placeContact('top'); break;
-        case 7: // 도트 패턴
-          D.style.color = tc; D.classList.remove('hidden'); setAlign('left'); placeContact('bl'); break;
-        case 8: // 대각 그라디언트
-          C.querySelector('linearGradient stop[offset="0%"]').setAttribute('stop-color', tc);
-          C.querySelector('linearGradient stop[offset="100%"]').setAttribute('stop-color', tc);
-          C.classList.remove('hidden'); setAlign('left'); placeContact('bl'); break;
-        case 9: // 라운드+인셋
-          E.classList.remove('hidden'); setAlign('left'); placeContact('br'); break;
-        case 10: // 보더 아웃라인
-          F.classList.remove('hidden'); setAlign('left'); placeContact('bl'); break;
-        default:
-          setAlign('left');
-      }
-    }
-
-    function toggleSide(){
-      if (state.side==='front'){ front.classList.remove('hidden'); back.classList.add('hidden'); }
-      else { back.classList.remove('hidden'); front.classList.add('hidden'); }
-    }
-
-    function updateQR(){
-      const text = state.website || state.email || state.phone || '';
-      if (!text){ state.qrDataUrl=''; $('qrImg').classList.add('hidden'); return; }
-      let payload = text; if (text.includes('@')) payload = 'mailto:'+text; else if (/^\+?\d[\d -]{7,}$/.test(text)) payload = 'tel:'+text.replace(/\s/g,'');
-      QRCode.toDataURL(payload, { margin:1, width:160 })
-        .then(url=>{ state.qrDataUrl=url; $('qrImg').src=url; $('qrImg').classList.remove('hidden'); save(); })
-        .catch(()=>{ $('qrImg').classList.add('hidden'); });
-    }
-
-    function renderAll(){ applyColors(); applyTemplate(); toggleSide(); }
-
-    // ====== 바인딩 ======
-    function bind(){
-      $('name').value = state.name; $('title').value = state.title; $('phone').value = state.phone; $('bio').value = state.bio;
-      $('email').value = state.email; $('website').value = state.website; $('address').value = state.address;
-      $('bgColor').value = state.bgColor; $('textColor').value = state.textColor; $('fontFamily').value = state.fontFamily;
-      $('side').value = state.side; $('template').value = String(state.template);
-
-      const sync = (k, render = true) => (e)=>{ state[k]=e.target.value; save(); if(render) renderAll(); };
-      $('name').addEventListener('input', sync('name')); $('title').addEventListener('input', sync('title'));
-      $('phone').addEventListener('input', sync('phone')); $('bio').addEventListener('input', sync('bio'));
-      $('email').addEventListener('input', (e)=>{ state.email=e.target.value; save(); updateQR(); renderAll(); });
-      $('website').addEventListener('input', (e)=>{ state.website=e.target.value; save(); updateQR(); renderAll(); });
-      $('address').addEventListener('input', sync('address'));
-      $('bgColor').addEventListener('input', sync('bgColor'));
-      $('textColor').addEventListener('input', sync('textColor'));
-      $('fontFamily').addEventListener('change', sync('fontFamily'));
-      $('side').addEventListener('change', (e)=>{ state.side=e.target.value; save(); toggleSide(); });
-      $('template').addEventListener('change', (e)=>{ state.template = Number(e.target.value); save(); applyTemplate(); });
-
-      $('logoInput').addEventListener('change', (e)=>{
+      logoInput.addEventListener('change', (e)=>{
         const f = e.target.files && e.target.files[0];
-        if(!f){ state.logoDataUrl=''; $('logoImg').classList.add('hidden'); $('logoStatus').classList.add('hidden'); save(); return; }
+        if(!f){ state.logoDataUrl=''; logoStatus.classList.add('hidden'); save(); return render(); }
         const reader = new FileReader();
-        reader.onload = () => { state.logoDataUrl = String(reader.result); $('logoImg').src = state.logoDataUrl; $('logoImg').classList.remove('hidden'); $('logoStatus').classList.remove('hidden'); save(); };
+        reader.onload = () => { state.logoDataUrl = String(reader.result); logoStatus.classList.remove('hidden'); save(); render(); };
         reader.readAsDataURL(f);
       });
 
-      $('resetBtn').addEventListener('click', ()=>{ localStorage.removeItem(KEY); location.reload(); });
+      el('resetBtn').addEventListener('click', ()=>{ localStorage.removeItem(KEY); location.reload(); });
 
-      // PC 다운로드
-      const download = async (type='png') => {
-        const canvas = await html2canvas(card, { backgroundColor: null, scale: 3, useCORS: true });
+      // PC 저장
+      const saveToPC = async (type='png') => {
+        const canvas = await html2canvas(card, { backgroundColor: null, scale: 3 });
         canvas.toBlob((blob)=>{
           if(!blob) return;
           const a = document.createElement('a');
           a.href = URL.createObjectURL(blob);
-          a.download = `${state.name||'card'}_${state.side}_${Date.now()}.` + (type==='jpg'?'jpg':type);
+          a.download = `${state.name||'card'}_${Date.now()}.` + (type==='jpg'?'jpg':type);
           a.click();
           setTimeout(()=> URL.revokeObjectURL(a.href), 10000);
         }, `image/${type==='jpg'?'jpeg':type}`);
       };
-      $('savePngPc').addEventListener('click', ()=> download('png'));
-      $('saveJpgPc').addEventListener('click', ()=> download('jpg'));
+      el('savePngPc').addEventListener('click', ()=> saveToPC('png'));
+      el('saveJpgPc').addEventListener('click', ()=> saveToPC('jpg'));
 
-      // 모바일 공유/갤러리 저장
-      $('shareMobile').addEventListener('click', async ()=>{
-        const canvas = await html2canvas(card, { backgroundColor: null, scale: 3, useCORS: true });
+      // 모바일 갤러리/공유 (팝업 차단 회피: 모달 미리보기 폴백 포함)
+      el('shareMobile').addEventListener('click', async ()=>{
+        const canvas = await html2canvas(card, { backgroundColor: null, scale: 3 });
         canvas.toBlob(async (blob)=>{
           if(!blob) return;
-          const file = new File([blob], `${state.name||'card'}_${state.side}.png`, { type: 'image/png' });
-          if (navigator.canShare && navigator.canShare({ files:[file] })){
-            try { await navigator.share({ files:[file], title:'명함 저장', text:'명함 이미지를 저장합니다.' }); }
-            catch(e){}
-          } else {
-            const url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            setTimeout(()=> URL.revokeObjectURL(url), 10000);
-            alert('이 브라우저는 파일 공유가 제한됩니다. 새 창에서 이미지를 길게 눌러 저장하세요.');
+          const fileName = `${state.name||'card'}.png`;
+          const file = new File([blob], fileName, { type: 'image/png' });
+
+          // 1) 가능하면 Web Share API 사용 (갤러리/사진앱 저장)
+          if (navigator.canShare && navigator.canShare({ files:[file] })) {
+            try { await navigator.share({ files:[file], title:'명함 저장', text:'명함 이미지를 저장합니다.' }); return; }
+            catch(e) { /* 사용자 취소 등 무시 후 폴백 진행 */ }
           }
+
+          // 2) 다운로드 링크 클릭 (일부 브라우저에서 파일앱으로 저장)
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = fileName; a.rel = 'noopener';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+
+          // 3) 같은 탭 모달 미리보기 → 길게 눌러 저장
+          const overlay = document.createElement('div');
+          overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;padding:16px;';
+          const img = document.createElement('img');
+          img.src = url; img.alt = 'export';
+          img.style.cssText = 'max-width:92vw;max-height:70vh;border-radius:12px;background:white;';
+          const tip = document.createElement('div');
+          tip.textContent = '이미지를 길게 눌러 저장하세요 (닫기 버튼으로 돌아가기)';
+          tip.style.cssText = 'color:white;margin-top:12px;font-size:14px;text-align:center;';
+          const btn = document.createElement('button');
+          btn.textContent = '닫기';
+          btn.className = 'mt-3 px-3 py-2 rounded bg-white';
+          btn.onclick = ()=> { document.body.removeChild(overlay); URL.revokeObjectURL(url); };
+          overlay.appendChild(img); overlay.appendChild(tip); overlay.appendChild(btn);
+          document.body.appendChild(overlay);
         }, 'image/png');
       });
 
       // 인쇄
-      $('printBtn').addEventListener('click', ()=>{
-        const w = window.open('', 'printWin'); if(!w) return;
+      el('printBtn').addEventListener('click', async ()=>{
+        const w = window.open('', 'printWin');
+        if(!w) return;
+        w.document.open();
         const html = `<!DOCTYPE html><html><head><meta charset='utf-8'><style>@page{size:86mm 54mm;margin:0}html,body{height:100%}body{display:grid;place-items:center;margin:0}</style></head><body>${card.outerHTML}</body></html>`;
-        w.document.open(); w.document.write(html); w.document.close(); w.focus(); w.print();
+        w.document.write(html);
+        w.document.close();
+        w.focus(); w.print();
       });
     }
 
-    // 초기 렌더
-    bind(); updateQR(); renderAll();
+    // init
+    bindInputs(); render(); attachEvents();
   </script>
 </body>
 </html>
